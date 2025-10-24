@@ -113,7 +113,6 @@ export const EditableField = ({ fieldPath, value, onDataChange, editingField, se
       } else {
         return { isMatch: true };
       }
-      return null;
     }
 
     function checkFemaFieldsConsistency() {
