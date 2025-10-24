@@ -81,7 +81,7 @@ const CustomQuery = () => {
     formData.append('comment', comment);
 
     try {
-      const res = await fetch('http://localhost:8000/extract', {
+      const res = await fetch('/api/extract', {
         method: 'POST',
         body: formData,
       });
