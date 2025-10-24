@@ -10,19 +10,10 @@ import { checkContractFieldsMandatory } from './contractValidation';
 import {
   checkZoning,
   checkSpecificZoningClassification,
-  checkHighestAndBestUse,
   checkFemaInconsistency,
   checkFemaFieldsConsistency,
   checkViewInconsistency,
-  checkAreaInconsistency,
-  checkTaxYear,
-  checkRETaxes,
-  checkPropertyRightsInconsistency,
-  checkUtilities,
 } from './subjectAndSiteValidation';
-import { checkHousingPriceAndAge, checkNeighborhoodUsageConsistency, checkNeighborhoodBoundaries } from './neighborhoodValidation';
-import { checkFoundationWallsCondition, checkRoofSurfaceCondition, checkDesignStyleConsistency, checkYearBuiltVsActualAge, checkBasementConsistency, checkConditionDescriptionConsistency } from './improvementsValidation';
-import { checkSubjectAddressInconsistency } from './salesComparisonValidation';
 
 const HighlightKeywords = ({ text, keywords }) => {
   if (!keywords || !text) {
@@ -100,7 +91,6 @@ export const EditableField = ({ fieldPath, value, onDataChange, editingField, se
       const raw = String(text || '').trim();
       if (!raw) {
        
-        return null;
       }
 
       const value = raw.toLowerCase();
