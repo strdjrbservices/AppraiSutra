@@ -22,7 +22,7 @@ import {
 } from './subjectAndSiteValidation';
 import { checkHousingPriceAndAge, checkNeighborhoodUsageConsistency, checkNeighborhoodBoundaries } from './neighborhoodValidation';
 import { checkFoundationWallsCondition, checkRoofSurfaceCondition, checkDesignStyleConsistency, checkYearBuiltVsActualAge, checkBasementConsistency, checkConditionDescriptionConsistency } from './improvementsValidation';
-import { checkSubjectAddressInconsistency, checkDesignStyleAdjustment, checkQualityOfConstructionAdjustment, checkConditionAdjustment, checkBedroomsAdjustment, checkBathsAdjustment, checkSiteAdjustment, checkGrossLivingAreaAdjustment, checkFunctionalUtilityAdjustment, checkEnergyEfficientItemsAdjustment, checkPorchPatioDeckAdjustment, checkHeatingCoolingAdjustment, checkProximityToSubject, checkDateOfSale, checkDataSourceDOM, checkActualAgeAdjustment } from './salesComparisonValidation';
+import { checkSubjectAddressInconsistency } from './salesComparisonValidation';
 
 const HighlightKeywords = ({ text, keywords }) => {
   if (!keywords || !text) {
@@ -103,8 +103,6 @@ export const EditableField = ({ fieldPath, value, onDataChange, editingField, se
         return null;
       }
 
-      const value = raw.toLowerCase();
-      const yesPattern = /^(y|yes)\b|present use|as improved|as proposed/;
       if (yesPattern.test(value)) {
         return { isMatch: true };
       }
