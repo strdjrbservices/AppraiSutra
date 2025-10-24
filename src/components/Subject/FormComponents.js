@@ -1,19 +1,6 @@
 import React from 'react';
 
 import { Tooltip } from '@mui/material';
-import {
-  checkPhysicalDeficiencies,
-  checkAssignmentTypeConsistency,
-  checkFinancialAssistanceInconsistency,
-} from './generalValidation';
-import { checkContractFieldsMandatory } from './contractValidation';
-import {
-  checkZoning,
-  checkSpecificZoningClassification,
-  checkFemaInconsistency,
-  checkFemaFieldsConsistency,
-  checkViewInconsistency,
-} from './subjectAndSiteValidation';
 
 const HighlightKeywords = ({ text, keywords }) => {
   if (!keywords || !text) {
@@ -90,7 +77,7 @@ export const EditableField = ({ fieldPath, value, onDataChange, editingField, se
       }
       const raw = String(text || '').trim();
       if (!raw) {
-       
+        return;
       }
 
       const value = raw.toLowerCase();
