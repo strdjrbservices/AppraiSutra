@@ -22,8 +22,7 @@ import {
 } from './subjectAndSiteValidation';
 import { checkHousingPriceAndAge, checkNeighborhoodUsageConsistency, checkNeighborhoodBoundaries } from './neighborhoodValidation';
 import { checkFoundationWallsCondition, checkRoofSurfaceCondition, checkDesignStyleConsistency, checkYearBuiltVsActualAge, checkBasementConsistency, checkConditionDescriptionConsistency } from './improvementsValidation';
-import { checkSubjectAddressInconsistency, checkDesignStyleAdjustment, checkQualityOfConstructionAdjustment, checkConditionAdjustment, checkBedroomsAdjustment, checkBathsAdjustment, checkSiteAdjustment, checkGrossLivingAreaAdjustment, checkFunctionalUtilityAdjustment, checkEnergyEfficientItemsAdjustment, checkPorchPatioDeckAdjustment, checkHeatingCoolingAdjustment, checkProximityToSubject, checkDateOfSale, checkDataSourceDOM, checkActualAgeAdjustment, checkLeaseholdFeeSimpleConsistency, checkCompDesignStyle } from './salesComparisonValidation';
-import { checkLenderAddressInconsistency, checkLenderNameInconsistency } from './appraiserLenderValidation';
+import { checkSubjectAddressInconsistency, checkDesignStyleAdjustment, checkQualityOfConstructionAdjustment, checkConditionAdjustment, checkBedroomsAdjustment, checkBathsAdjustment, checkSiteAdjustment, checkGrossLivingAreaAdjustment, checkFunctionalUtilityAdjustment, checkEnergyEfficientItemsAdjustment, checkPorchPatioDeckAdjustment, checkHeatingCoolingAdjustment, checkProximityToSubject, checkDateOfSale, checkDataSourceDOM, checkActualAgeAdjustment } from './salesComparisonValidation';
 
 const HighlightKeywords = ({ text, keywords }) => {
   if (!keywords || !text) {
@@ -93,8 +92,7 @@ export const EditableField = ({ fieldPath, value, onDataChange, editingField, se
         return { isError: true, message: `Invalid Zoning Compliance value: '${value}'.` };
       }
       return null;
-      
-    };
+    }
     function checkHighestAndBestUse() {
       if (field !== 'Is the highest and best use of subject property as improved (or as proposed per plans and specifications) the present use?') {
         return;
@@ -242,7 +240,7 @@ export const EditableField = ({ fieldPath, value, onDataChange, editingField, se
       const appraiserLenderName = String(data['Lender/Client Company Name'] || '').trim();
       if (subjectLenderName && appraiserLenderName) {
         if (subjectLenderName !== appraiserLenderName) {
-          return { isError: true, message: `"Lender/Client mismatch: Subject section has '${subjectLenderName}', but Appraiser section has '${appraiserLenderName}'.\"` };
+          return { isError: true, message: `Lender/Client mismatch: Subject section has '${subjectLenderName}', but Appraiser section has '${appraiserLenderName}'.` };
         } else {
           return { isMatch: true };
         }
@@ -918,11 +916,6 @@ export const EditableField = ({ fieldPath, value, onDataChange, editingField, se
 
     const checkCompDesignStyle = () => {
       if (field !== 'Design (Style)' || !saleName || saleName === 'Subject' || !allData || !allData.Subject) return;
-
-      const subjectDesign = String(allData.Subject['Design (Style)'] || '').trim();
-      const compDesign = String(text || '').trim();
-
-
     };
     const checkLeaseholdFeeSimpleConsistency = () => {
       if (field !== 'Leasehold/Fee Simple') return;
