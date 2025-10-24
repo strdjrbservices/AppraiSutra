@@ -1,0 +1,160 @@
+import React from 'react';
+import { SubjectInfoCard, GridInfoCard, FieldTable, MarketConditionsTable, EditableField } from './FormComponents';
+import { SubjectAddressConsistency, ComparableAddressConsistency } from './subject';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import SalesComparisonSection from './SalesComparisonSection';
+
+const Form1007 = ({ data, extractionAttempted, handleDataChange, editingField, setEditingField, highlightedSubjectFields, highlightedContractFields, highlightedSiteFields, subjectFields, contractFields, neighborhoodFields, siteFields, improvementsFields, salesGridRows, comparableSales, salesHistoryFields, salesComparisonAdditionalInfoFields, reconciliationFields, costApproachFields, incomeApproachFields, pudInformationFields, marketConditionsRows, marketConditionsFields, appraiserFields, supplementalAddendumFields, uniformResidentialAppraisalReportFields, appraisalAndReportIdentificationFields, imageAnalysisFields, dataConsistencyFields, condoCoopProjectsFields, comparableRents, RentSchedulesFIELDS2, rentScheduleReconciliationFields, formType, comparisonData, getComparisonStyle }) => (
+  <>
+    <SubjectInfoCard id="subject-info" title="Subject Information" fields={subjectFields} data={data} extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange([field], value)} isEditable={true} editingField={editingField} setEditingField={setEditingField} highlightedFields={highlightedSubjectFields} allData={data} comparisonData={comparisonData} getComparisonStyle={getComparisonStyle} />
+    <GridInfoCard id="contract-section" title="Contract Section" fields={contractFields} data={data.CONTRACT} cardClass="bg-secondary" extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(['CONTRACT', ...field], value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} highlightedFields={highlightedContractFields} allData={data} />
+    <GridInfoCard id="neighborhood-section" title="Neighborhood Section" fields={neighborhoodFields} data={data.NEIGHBORHOOD} cardClass="bg-info" extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(['NEIGHBORHOOD', ...field], value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} allData={data} />
+    <GridInfoCard id="site-section" title="Site Section" fields={siteFields} data={data} cardClass="bg-warning" extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(field, value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} highlightedFields={highlightedSiteFields} />
+    <GridInfoCard id="improvements-section" title="Improvements Section" fields={improvementsFields} data={data} cardClass="bg-success" extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(field, value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+
+    <SalesComparisonSection
+      data={data}
+      extractionAttempted={extractionAttempted}
+      handleDataChange={handleDataChange}
+      editingField={editingField}
+      setEditingField={setEditingField}
+      salesGridRows={salesGridRows}
+      comparableSales={comparableSales}
+      salesHistoryFields={salesHistoryFields}
+      salesComparisonAdditionalInfoFields={salesComparisonAdditionalInfoFields}
+      isEditable={true}
+      formType={formType}
+    />
+
+    <div id="rent-schedule-section" style={{ marginBottom: '1rem', marginTop: '1rem' }} className="card shadow mb-4">
+      <div className="card-header CAR1 bg-info text-white" style={{ position: 'sticky', top: 0, zIndex: 10 }}>
+        <strong>Comparable Rent Schedule</strong>
+      </div>
+      <div className="card-body p-0 table-container">
+        <table className="table table-hover table-striped mb-0" style={{ fontSize: '0.8rem' }}>
+          <thead className="table-light">
+            <tr>
+              <th className="border border-gray-400 p-1 bg-gray-200">Feature</th>
+              <th className="border border-gray-400 p-1 bg-gray-200">Subject</th>
+              {comparableRents.map((rent, idx) => (
+                <th key={idx} className="border border-gray-400 p-1 bg-gray-200">{rent}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {RentSchedulesFIELDS2.map((feature, idx) => (
+              <tr key={idx}>
+                <td className="border border-gray-400 p-1 font-medium">{feature}</td>
+                <td className="border border-gray-400 p-1">
+                  <EditableField
+                    fieldPath={['Subject', feature]} value={(data.Subject && data.Subject[feature]) || ''}
+                    onDataChange={handleDataChange} editingField={editingField} setEditingField={setEditingField}
+                    isMissing={extractionAttempted && (!data.Subject || !data.Subject[feature] || data.Subject[feature] === '')} isEditable={true}
+                     />
+                </td>
+                {comparableRents.map((rent, cidx) => (
+                  <td key={cidx} className="border border-gray-400 p-1">
+                    <EditableField
+                      fieldPath={[rent, feature]}
+                      value={(data[rent] && data[rent][feature]) || ''}
+                      onDataChange={handleDataChange} editingField={editingField} setEditingField={setEditingField}
+                      isMissing={extractionAttempted && (!data[rent] || !data[rent][feature] || data[rent][feature] === '')} isEditable={true}
+                    />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <GridInfoCard id="rent-schedule-reconciliation-section" title="Comparable Rent Schedule Reconciliation" fields={rentScheduleReconciliationFields} data={data} cardClass="bg-info" usePre={true} extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(field, value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+
+    <GridInfoCard id="reconciliation-section" title="RECONCILIATION" fields={reconciliationFields} data={data} cardClass="bg-secondary" extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(field, value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+    <GridInfoCard id="cost-approach-section" title="Cost Approach" fields={costApproachFields} data={data} cardClass="bg-dark" extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(field, value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+    <GridInfoCard id="income-approach-section" title="Income Approach" fields={incomeApproachFields} data={data} cardClass="bg-danger" extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(field, value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+    <GridInfoCard id="pud-info-section" title="PUD Information" fields={pudInformationFields} data={data} cardClass="bg-secondary" extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(field, value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+    <GridInfoCard id="market-conditions-summary" title="Market Conditions Summary" fields={marketConditionsFields} data={data?.MARKET_CONDITIONS} cardClass="bg-warning" usePre={true} extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(['MARKET_CONDITIONS', field], value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+    <MarketConditionsTable id="market-conditions-section" title="Market Conditions Addendum" data={data} onDataChange={(field, value) => handleDataChange(field, value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} marketConditionsRows={marketConditionsRows} />
+    <GridInfoCard id="condo-coop-section" title="CONDO/CO-OP PROJECTS" fields={condoCoopProjectsFields} data={data} cardClass="bg-primary" usePre={true} extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(field, value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+    <GridInfoCard id="appraiser-section" title="Appraiser Section" fields={appraiserFields} data={data} cardClass="bg-info" extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(field, value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+    <FieldTable id="supplemental-addendum-section" title="Supplemental Addendum" fields={supplementalAddendumFields} data={data} cardClass="bg-light text-dark" usePre={true} extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange([field], value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+    <FieldTable id="uniform-report-section" title="Uniform Residential Appraisal Report" fields={uniformResidentialAppraisalReportFields} data={data} cardClass="bg-dark" usePre={true} extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange([field], value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+    <FieldTable id="appraisal-id-section" title="Appraisal and Report Identification" fields={appraisalAndReportIdentificationFields} data={data} cardClass="bg-info" usePre={true} extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange([field], value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} />
+
+    <ComparableAddressConsistency data={data} comparableSales={comparableSales} extractionAttempted={extractionAttempted} onDataChange={handleDataChange} editingField={editingField} setEditingField={setEditingField} />
+
+    <div id="data-consistency-section" style={{ marginBottom: '1rem', marginTop: '1rem' }} className="card shadow mb-4">
+      <div className="card-header CAR1 bg-dark text-white" style={{ position: 'sticky', top: 0, zIndex: 10 }}>
+        <strong>Data Consistency Check</strong>
+      </div>
+      <div className="card-body p-0 table-container">
+        <table className="table table-hover table-striped mb-0">
+          <thead className="table-light">
+            <tr>
+              <th>Feature</th>
+              <th>Improvements</th>
+              <th>Sales Grid</th>
+              <th>Photos</th>
+              <th>Floor Plan</th>
+              <th>label correct?</th>
+              <th>duplicate photo?</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(dataConsistencyFields).map((feature) => (
+              <tr key={feature}>
+                <td className="font-medium">{feature}</td>
+                {Object.keys(dataConsistencyFields[feature]).map((source) => {
+                  const values = Object.values(dataConsistencyFields[feature]).map(fieldName => data[fieldName]).filter(Boolean);
+                  let isConsistent = false;
+                  if (values.length > 0) {
+                    const uniqueValues = new Set(values.map(v => String(v).trim()));
+                    if (uniqueValues.size <= 1) {
+                      isConsistent = true;
+                    }
+                  }
+                  const fieldName = dataConsistencyFields[feature][source];
+                  const value = data[fieldName];
+                  const isMissing = extractionAttempted && (!value || value === '');
+                  return (
+                    <td key={source} style={isMissing ? { border: '2px solid red' } : {}}>
+                      <EditableField
+                        fieldPath={[fieldName]}
+                        value={value || ''}
+                        onDataChange={(path, val) => handleDataChange(path, val)}
+                        editingField={editingField} setEditingField={setEditingField}
+                        isMissing={isMissing} isEditable={true} />
+                    </td>
+                  );
+                })}
+                <td>
+                  {feature === 'Bedroom' && <EditableField fieldPath={['photo and label of the Bedrooms correct are matching?']} value={data['photo and label of the Bedrooms correct are matching?'] || ''} onDataChange={handleDataChange} editingField={editingField} setEditingField={setEditingField} isEditable={true} />}
+                  {feature === 'Bathroom' && <EditableField fieldPath={['photo and label of the Bathrooms correct are matching?']} value={data['photo and label of the Bathrooms correct are matching?'] || ''} onDataChange={handleDataChange} editingField={editingField} setEditingField={setEditingField} isEditable={true} />}
+                </td>
+                <td>
+                  {feature === 'Bedroom' && <EditableField fieldPath={['check for the duplicate photo of the Bedrooms?']} value={data['check for the duplicate photo of the Bedrooms?'] || ''} onDataChange={handleDataChange} editingField={editingField} setEditingField={setEditingField} isEditable={true} />}
+                  {feature === 'Bathroom' && <EditableField fieldPath={['check for the duplicate photo of the Bathrooms?']} value={data['check for the duplicate photo of the Bathrooms?'] || ''} onDataChange={handleDataChange} editingField={editingField} setEditingField={setEditingField} isEditable={true} />}
+                </td>
+                <td style={{ textAlign: 'center' }}>
+                  {(() => {
+                    const values = Object.values(dataConsistencyFields[feature]).map(fieldName => data[fieldName]).filter(Boolean);
+                    if (values.length === 0) return null;
+                    const uniqueValues = new Set(values.map(v => String(v).trim()));
+                    const isConsistent = uniqueValues.size <= 1;
+                    return isConsistent ? <CheckCircleOutlineIcon style={{ color: 'green' }} /> : <ErrorOutlineIcon style={{ color: 'red' }} />;
+                  })()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <GridInfoCard id="image-analysis-section" title="Image Analysis" fields={imageAnalysisFields} data={data.IMAGE_ANALYSIS} cardClass="bg-dark" usePre={true} extractionAttempted={extractionAttempted} onDataChange={(field, value) => handleDataChange(['IMAGE_ANALYSIS', ...field], value)} editingField={editingField} setEditingField={setEditingField} isEditable={true} allData={data} />
+  </>
+);
+
+export default Form1007;
