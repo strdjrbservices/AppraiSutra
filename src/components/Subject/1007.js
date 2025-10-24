@@ -1,6 +1,6 @@
 import React from 'react';
 import { SubjectInfoCard, GridInfoCard, FieldTable, MarketConditionsTable, EditableField } from './FormComponents';
-import { SubjectAddressConsistency, ComparableAddressConsistency } from './subject';
+import { ComparableAddressConsistency } from './subject';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import SalesComparisonSection from './SalesComparisonSection';
@@ -108,14 +108,6 @@ const Form1007 = ({ data, extractionAttempted, handleDataChange, editingField, s
               <tr key={feature}>
                 <td className="font-medium">{feature}</td>
                 {Object.keys(dataConsistencyFields[feature]).map((source) => {
-                  const values = Object.values(dataConsistencyFields[feature]).map(fieldName => data[fieldName]).filter(Boolean);
-                  let isConsistent = false;
-                  if (values.length > 0) {
-                    const uniqueValues = new Set(values.map(v => String(v).trim()));
-                    if (uniqueValues.size <= 1) {
-                      isConsistent = true;
-                    }
-                  }
                   const fieldName = dataConsistencyFields[feature][source];
                   const value = data[fieldName];
                   const isMissing = extractionAttempted && (!value || value === '');
