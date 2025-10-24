@@ -1001,7 +1001,7 @@ function Subject() {
           setExtractionProgress(prev => (prev < 40 ? prev + 5 : prev));
         }, 500);
 
-       const response = await fetch(`/api/extract`, {
+        const response = await fetch('http://localhost:8000/extract', {
           method: 'POST', body: formData
         });
 
@@ -1111,19 +1111,6 @@ function Subject() {
     // Trigger a specific extraction for the clicked section
     setNotification({ open: true, message: `Extracting ${section.title} section...`, severity: 'info' });
     handleExtract(section.category);
-  };
-
-  const handleRefresh = () => {
-    setData({});
-    setActiveSection(null);
-    setLoading(false);
-    setNotification({ open: false, message: '', severity: 'info' });
-    setRawGemini('');
-    setExtractionAttempted(false);
-    setExtractionProgress(0);
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-    }
   };
 
   const handleCloseNotification = (event, reason) => {
