@@ -987,6 +987,7 @@ function Subject() {
     const retries = 3;
     const delay = 1000;
 
+    let response;
     for (let i = 0; i < retries; i++) {
       try {
         const formData = new FormData();
@@ -1001,7 +1002,7 @@ function Subject() {
           setExtractionProgress(prev => (prev < 40 ? prev + 5 : prev));
         }, 500);
 
-        const res = await fetch('/api/extract', {
+        response = await fetch('/api/extract', {
           method: 'POST', body: formData
         });
 
