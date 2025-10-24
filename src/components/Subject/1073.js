@@ -1,5 +1,5 @@
 import React from 'react';
-import { SubjectInfoCard, GridInfoCard, FieldTable, MarketConditionsTable } from './FormComponents';
+import { SubjectInfoCard, GridInfoCard, FieldTable, MarketConditionsTable, EditableField } from './FormComponents';
 import { ComparableAddressConsistency } from './subject';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
