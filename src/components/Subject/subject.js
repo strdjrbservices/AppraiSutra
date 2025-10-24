@@ -1001,7 +1001,7 @@ function Subject() {
           setExtractionProgress(prev => (prev < 40 ? prev + 5 : prev));
         }, 500);
 
-        const response = await fetch('http://localhost:8000/extract', {
+        const res = await fetch('/api/extract', {
           method: 'POST', body: formData
         });
 
