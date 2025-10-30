@@ -562,27 +562,26 @@ async def extract_fields_from_pdf(pdf_path, form_type: str, category: str = None
         }
 
         if category:
-            # We are now only ever processing a single category.
-            category_name = category.upper()
-            if category_name == "SALES_GRID":
-                _, response = await process_sales_grid()
-            elif category_name == "RENT_SCHEDULE_GRID":
-                _, response = await process_rent_schedule_grid()
-            elif category_name in field_categories:
-                _, response = await process_category(category_name, field_categories[category_name])
-            else:
-                raise ValueError(f"Unknown category provided: {category}")
-            results = [(category_name, response)]
+            categories_to_process = [category.upper()]
         else:
-            # This case should no longer be hit as the UI requires a category.
-            raise ValueError("No category specified for extraction.")
+            categories_to_process = FORM_TYPE_CATEGORIES.get(form_type, DEFAULT_CATEGORIES)
 
-        # results = []
-        # chunk_size = 5
-        # for i in range(0, len(tasks), chunk_size):
-        #     chunk = tasks[i:i + chunk_size]
-        #     chunk_results = await asyncio.gather(*chunk)
-        #     results.extend(chunk_results)
+        import asyncio
+        tasks = []
+        for category_name in categories_to_process:
+            if category_name == "SALES_GRID":
+                tasks.append(process_sales_grid())
+            elif category_name == "RENT_SCHEDULE_GRID":
+                tasks.append(process_rent_schedule_grid())
+            elif category_name in field_categories:
+                tasks.append(process_category(category_name, field_categories[category_name]))
+
+        results = []
+        chunk_size = 5
+        for i in range(0, len(tasks), chunk_size):
+            chunk = tasks[i:i + chunk_size]
+            chunk_results = await asyncio.gather(*chunk)
+            results.extend(chunk_results)
 
         for category_name, response in results:
             try:
