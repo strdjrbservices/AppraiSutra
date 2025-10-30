@@ -560,11 +560,6 @@ async def extract_fields_from_pdf(pdf_path, form_type: str, category: str = None
             "PROJECT_ANALYSIS": Project_Analysis_FIELDS, "UNIT_DESCRIPTIONS": UNIT_DESCRIPTIONS_FIELDS,
             "DATA_CONSISTENCY": DATA_CONSISTENCY_FIELDS
         }
-        
-        # A flag to track if we are processing only the SUBJECT category
-        is_subject_only_request = category and category.upper() == "SUBJECT"
-        if is_subject_only_request:
-            category = "SUBJECT" # Ensure consistent casing
 
         if category:
             categories_to_process = [category.upper()]
@@ -622,12 +617,7 @@ async def extract_fields_from_pdf(pdf_path, form_type: str, category: str = None
                              
                             data[field] = f"I {value.get('choice', '')} . {value.get('comment', '')}".strip()
 
-                    # If this was a request specifically for the SUBJECT category,
-                    # wrap the results in a "Subject" key to match frontend expectations.
-                    if is_subject_only_request and category_name == "SUBJECT":
-                        combined_result["Subject"] = data
-
-                    elif category_name in ["SALES_GRID", "RENT_SCHEDULE_GRID"]:
+                    if category_name in ["SALES_GRID", "RENT_SCHEDULE_GRID"]:
                          
                         if "Subject" in data:
                             if "Subject" not in combined_result:
