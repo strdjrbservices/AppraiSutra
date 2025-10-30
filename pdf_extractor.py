@@ -1,8 +1,11 @@
 import google.generativeai as genai
 import tempfile
 import json
+import os
 
-genai.configure(api_key="AIzaSyB8eyaZrEvF-YqodfKgtpnKYXP5FeuYjuA")
+# Securely configure the API key from an environment variable
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+genai.configure(api_key=GEMINI_API_KEY)
 
 #{{1004}}
 
@@ -559,30 +562,27 @@ async def extract_fields_from_pdf(pdf_path, form_type: str, category: str = None
         }
 
         if category:
-            categories_to_process = [category.upper()]
-        else:
-            categories_to_process = FORM_TYPE_CATEGORIES.get(form_type, DEFAULT_CATEGORIES)
-
-        import asyncio
-        tasks = []
-        for category_name in categories_to_process:
+            # We are now only ever processing a single category.
+            category_name = category.upper()
             if category_name == "SALES_GRID":
-                tasks.append(process_sales_grid())
+                _, response = await process_sales_grid()
             elif category_name == "RENT_SCHEDULE_GRID":
-                tasks.append(process_rent_schedule_grid())
+                _, response = await process_rent_schedule_grid()
             elif category_name in field_categories:
-                tasks.append(process_category(category_name, field_categories[category_name]))
+                _, response = await process_category(category_name, field_categories[category_name])
+            else:
+                raise ValueError(f"Unknown category provided: {category}")
+            results = [(category_name, response)]
+        else:
+            # This case should no longer be hit as the UI requires a category.
+            raise ValueError("No category specified for extraction.")
 
-        results = []
-        chunk_size = 5
-        for i in range(0, len(tasks), chunk_size):
-            chunk = tasks[i:i + chunk_size]
-            chunk_results = await asyncio.gather(*chunk)
-            results.extend(chunk_results)
-             
-            if i + chunk_size < len(tasks):
-                print(f"Processed chunk {i//chunk_size + 1}, waiting before next batch...")
-                await asyncio.sleep(60)
+        # results = []
+        # chunk_size = 5
+        # for i in range(0, len(tasks), chunk_size):
+        #     chunk = tasks[i:i + chunk_size]
+        #     chunk_results = await asyncio.gather(*chunk)
+        #     results.extend(chunk_results)
 
         for category_name, response in results:
             try:
