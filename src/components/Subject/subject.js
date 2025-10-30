@@ -1013,15 +1013,15 @@ function Subject() {
         });
 
         if (!response.ok) {
-          let error;
+          const errorText = await response.text();
+          let errorMessage = errorText;
           try {
-            const err = await response.json();
-            error = new Error(err.error || 'Extraction failed with a non-JSON response.');
+            const err = JSON.parse(errorText);
+            errorMessage = err.error || err.detail || 'Extraction failed with a non-JSON response.';
           } catch (jsonError) {
-            const errorText = await response.text();
-            error = new Error(errorText || 'An unknown extraction error occurred.');
+            // The error is not JSON, so we'll use the raw text.
           }
-          throw error;
+          throw new Error(errorMessage || 'An unknown extraction error occurred.');
         }
         clearTimeout(timeoutId);
         clearInterval(progressInterval);
