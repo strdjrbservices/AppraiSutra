@@ -26,6 +26,31 @@ app.add_middleware(
 def health():
     return {"status": "ok"}
 
+@app.post("/extract1")
+async def extract_by_category(file: UploadFile = File(...), form_type: str = Form(...), category: str = Form(None)):
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="No file uploaded")
+    if not file.filename.lower().endswith('.pdf'):
+        raise HTTPException(status_code=400, detail="Only PDF files are supported")
+    
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp:
+        content = await file.read()
+        tmp.write(content)
+        tmp_path = tmp.name
+    
+    try:
+        # This function from pdf_extractor.py contains the long-running Gemini calls
+        data = await extract_fields_from_pdf(tmp_path, form_type, category=category, custom_prompt=None)
+        return data
+    except Exception as exc:
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(exc))
+    finally:
+        try:
+            os.remove(tmp_path)
+        except Exception:
+            pass
+
 @app.post("/extract")
 async def extract(file: UploadFile = File(...), form_type: str = Form(...), category: str = Form(None), comment: str = Form(None)):
     if not file.filename:
