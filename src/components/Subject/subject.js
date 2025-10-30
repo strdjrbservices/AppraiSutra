@@ -1006,7 +1006,7 @@ function Subject() {
         // This helps us catch timeouts on the client-side.
         const timeoutId = setTimeout(() => controller.abort(), 90000); // Increased to 90 seconds
 
-        response = await fetch('/api/extract-by-category', {
+        response = await fetch('/extract-by-category', {
           method: 'POST',
           body: formData,
           signal: controller.signal
