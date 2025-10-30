@@ -1002,9 +1002,9 @@ function Subject() {
           setExtractionProgress(prev => (prev < 40 ? prev + 5 : prev));
         }, 500);
 
-        // Set a 15-second timeout for the request, which is longer than Vercel's 10s limit.
+        // Set a 55-second timeout for the request, which is longer than Vercel's 10s limit.
         // This helps us catch timeouts on the client-side.
-        const timeoutId = setTimeout(() => controller.abort(), 15000);
+        const timeoutId = setTimeout(() => controller.abort(), 55000);
 
         response = await fetch('/extract-by-category', {
           method: 'POST',
