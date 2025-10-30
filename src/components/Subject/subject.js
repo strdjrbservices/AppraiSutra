@@ -1004,7 +1004,7 @@ function Subject() {
 
         // Set a 55-second timeout for the request, which is longer than Vercel's 10s limit.
         // This helps us catch timeouts on the client-side.
-        const timeoutId = setTimeout(() => controller.abort(), 55000);
+        const timeoutId = setTimeout(() => controller.abort(), 90000); // Increased to 90 seconds
 
         response = await fetch('/extract-by-category', {
           method: 'POST',
@@ -1029,8 +1029,10 @@ function Subject() {
         return await response.json();
       } catch (error) {
         if (error.name === 'AbortError') {
-          
-          throw new Error(`The request for the '${category}' section timed out. The server is taking too long to respond. Please try again in a moment.`);
+          throw new Error(
+            `The request for the '${category}' section timed out. This can happen with large documents or complex sections. ` +
+            "Please check your internet connection. If the problem persists, try extracting another section or try again in a moment."
+          );
         }
         if (i < retries - 1 && response?.status !== 504) {
           onRetry(i + 1, retries);
