@@ -4,7 +4,7 @@ os.environ["GRPC_VERBOSITY"] = "ERROR"
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
-from pdf_extractor import (
+from api.pdf_extractor import (
     extract_fields_from_pdf, 
     get_sales_comparison_data
 )
