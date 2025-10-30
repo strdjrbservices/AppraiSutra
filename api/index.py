@@ -26,7 +26,7 @@ app.add_middleware(
 def health():
     return {"status": "ok"}
 
-@app.post("/extract-by-category")
+@app.post("/extract1")
 async def extract_by_category(file: UploadFile = File(...), form_type: str = Form(...), category: str = Form(None)):
     if not file.filename:
         raise HTTPException(status_code=400, detail="No file uploaded")
