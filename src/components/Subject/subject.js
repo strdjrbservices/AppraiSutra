@@ -1006,7 +1006,7 @@ function Subject() {
         // This helps us catch timeouts on the client-side.
         const timeoutId = setTimeout(() => controller.abort(), 55000);
 
-        response = await fetch('/extract1', {
+        response = await fetch('/extract', {
           method: 'POST',
           body: formData,
           signal: controller.signal
