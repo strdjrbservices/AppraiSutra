@@ -7,7 +7,7 @@ from google.api_core import exceptions as google_exceptions
 from fastapi.middleware.cors import CORSMiddleware
 from .pdf_extractor import (
     extract_fields_from_pdf, 
-    get_sales_comparison_data
+    get_sales_comparison_data 
 )
 import tempfile
 import traceback
