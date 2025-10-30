@@ -3,15 +3,16 @@ import os
 os.environ["GRPC_VERBOSITY"] = "ERROR"
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Form
+from google.api_core import exceptions as google_exceptions
 from fastapi.middleware.cors import CORSMiddleware
-from pdf_extractor import (
+from .pdf_extractor import (
     extract_fields_from_pdf, 
     get_sales_comparison_data
 )
 import tempfile
 import traceback
 
-app = FastAPI()
+app = FastAPI(title="Appraisal Extractor API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -64,6 +65,9 @@ async def extract(file: UploadFile = File(...), form_type: str = Form(...), cate
     try:
         data = await extract_fields_from_pdf(tmp_path, form_type, category=category, custom_prompt=comment)
         return data
+    except google_exceptions.ResourceExhausted as e:
+        traceback.print_exc()
+        raise HTTPException(status_code=429, detail=f"Gemini API quota exceeded. Please check your billing or wait. Error: {e}")
     except Exception as exc:
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(exc))
